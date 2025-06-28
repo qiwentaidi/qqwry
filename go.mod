@@ -1,4 +1,4 @@
-module github.com/qiwentiadi/qqwry
+module github.com/qiwentaidi/qqwry
 
 go 1.23.0
 
