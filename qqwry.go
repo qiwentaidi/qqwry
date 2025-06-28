@@ -1,3 +1,30 @@
+// Package qqwry provides functionality to query IP location information using QQWry database format.
+//
+// QQWry is a popular IP location database format used in China. This package allows you to:
+// - Parse QQWry database files
+// - Query IP location information (country and area)
+// - Handle GBK encoding automatically
+//
+// Example usage:
+//
+//	file, err := os.Open("qqwry.dat")
+//	if err != nil {
+//	    log.Fatal(err)
+//	}
+//	defer file.Close()
+//
+//	qq, err := qqwry.NewQQwryFS(file)
+//	if err != nil {
+//	    log.Fatal(err)
+//	}
+//
+//	result, err := qq.Find("8.8.8.8")
+//	if err != nil {
+//	    log.Fatal(err)
+//	}
+//
+//	fmt.Println(result.String())
+//
 // https://github.com/zu1k/nali
 package qqwry
 
@@ -13,6 +40,7 @@ import (
 	"golang.org/x/text/encoding/simplifiedchinese"
 )
 
+// QQwry represents a QQWry database instance for querying IP location information.
 type QQwry struct {
 	IPDB
 }
@@ -24,7 +52,8 @@ const (
 	RedirectMode2 = 0x02
 )
 
-// NewQQwry new database from path
+// NewQQwryFS creates a new QQWry instance from a file.
+// It reads the entire file into memory and initializes the database for querying.
 func NewQQwryFS(fs *os.File) (qqwry *QQwry, err error) {
 	var fileData []byte
 	var fileInfo FileData
@@ -51,6 +80,9 @@ func NewQQwryFS(fs *os.File) (qqwry *QQwry, err error) {
 	}, nil
 }
 
+// Find queries the location information for an IP address.
+// The query parameter should be a valid IPv4 address string.
+// Returns a Result containing country and area information, or an error if the query fails.
 func (db QQwry) Find(query string) (result fmt.Stringer, err error) {
 	ip := net.ParseIP(query)
 	if ip == nil {

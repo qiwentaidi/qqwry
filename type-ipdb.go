@@ -6,14 +6,14 @@ import (
 	"os"
 )
 
-// FileData: info of database file
+// FileData contains information about the database file.
 type FileData struct {
 	Data     []byte
 	FilePath string
 	FileBase *os.File
 }
 
-// IPDB common ip database
+// IPDB represents a common IP database with basic operations.
 type IPDB struct {
 	Data   *FileData
 	Offset uint32
@@ -89,11 +89,13 @@ func GetMiddleOffset(start uint32, end uint32, indexLen uint32) uint32 {
 	return start + records*indexLen
 }
 
+// Result contains the location information for an IP address.
 type Result struct {
 	Country string
 	Area    string
 }
 
+// String returns a formatted string representation of the location result.
 func (r Result) String() string {
 	return fmt.Sprintf("%s %s", r.Country, r.Area)
 }
